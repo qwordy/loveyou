@@ -12,16 +12,16 @@ class Bot extends BaseBot{
 
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             console.log(postData);
-            return {
-                outputSpeech: '缺省意图'
-            }
+            //return {
+              //  outputSpeech: '缺省意图'
+            //}
         });
 
         this.addIntentHandler('record', ()=>{
-            date = this.getSlot('sys.date');
+            let date = this.getSlot('sys.date');
         
             if (!action) {
-                card = new Bot.Card.TextCard('你要做什么');
+                let card = new Bot.Card.TextCard('你要做什么');
                 return {
                     card: card,
                     outputSpeech: '你要做什么'
