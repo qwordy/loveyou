@@ -6,8 +6,15 @@ class Bot extends BaseBot{
         
         this.addIntentHandler('LaunchRequest', ()=>{
             return {
-                "outputSpeech" : "欢迎使用有爱"
+                outputSpeech: '欢迎使用有爱'
             };
+        });
+
+        this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
+            console.log(postData);
+            return {
+                outputSpeech: '缺省意图'
+            }
         });
 
         this.addIntentHandler('record', ()=>{
