@@ -27,7 +27,7 @@ app.post('/', (req, res) => {
         var b = new Bot(JSON.parse(req.rawBody));
         // 开启签名认证
         // 为了避免你的服务被非法请求，建议你验证请求是否来自于DuerOS
-        b.initCertificate(req.headers, req.rawBody).enableVerifyRequestSign();
+        //b.initCertificate(req.headers, req.rawBody).enableVerifyRequestSign();
 
         /**
          * 如果需要监控统计功能
@@ -36,22 +36,22 @@ app.post('/', (req, res) => {
          * 打开此功能，对服务的性能有一定的耗时增加。另外，需要在DBP平台上面上传public key，这里使用私钥签名
          * 文档参考：https://dueros.baidu.com/didp/doc/dueros-bot-platform/dbp-deploy/authentication_markdown
          */
-        b.setPrivateKey(__dirname + '/rsa_private_key.pem').then(function(key){
-            // 0: debug  1: online
-            b.botMonitor.setEnvironmentInfo(key, 0);
+        // b.setPrivateKey(__dirname + '/rsa_private_key.pem').then(function(key){
+        //     // 0: debug  1: online
+        //     b.botMonitor.setEnvironmentInfo(key, 0);
 
-            b.run().then(function(result){
-                res.send(result);
-            });
-        }, function(err){
-            console.error('error'); 
-        });
+        //     b.run().then(function(result){
+        //         res.send(result);
+        //     });
+        // }, function(err){
+        //     console.error('error'); 
+        // });
 
         
         // 不需要监控
-        // b.run() 返回一个Promise的实例
-        //b.run().then(function(result){
-        //    res.send(result);
-        //});
+        b.run() //返回一个Promise的实例
+        b.run().then(function(result){
+           res.send(result);
+        });
     });
 }).listen(8014);
