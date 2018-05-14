@@ -12,7 +12,7 @@ class Bot extends BaseBot{
 
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             //console.log(postData);
-            console.log(this.request.getData)
+            console.log(this.request.getData())
             //return {
               //  outputSpeech: '缺省意图'
             //}
@@ -27,7 +27,7 @@ class Bot extends BaseBot{
             let action = this.getSlot('action');
             console.log(date);
             console.log(action);
-            console.log(this.request.getData)
+            console.log(this.request.getData())
             let card = new Bot.Card.TextCard('好的记下了呢');
             return {
                 card: card,
@@ -44,7 +44,7 @@ class Bot extends BaseBot{
             let holiday = this.getSlot('sys.holiday');
             console.log(date);
             console.log(holiday);
-            console.log(this.request.getData)
+            console.log(this.request.getData())
             let card = new Bot.Card.TextCard('好的记下了呢');
             return {
                 card: card,
