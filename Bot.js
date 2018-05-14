@@ -14,6 +14,15 @@ class Bot extends BaseBot{
             //console.log(postData);
             let text = postData['request']['query']['original']
             let card = new Bot.Card.TextCard(text);
+            if (matchRecord(text)) {
+                console.log('matchRecord');
+            } else if (matchReserve(text)) {
+
+            } else if (matchRemind(text)) {
+
+            } else if (matchRecall(text)) {
+
+            }
             console.log(text)
             return {
                 card: card,
@@ -86,6 +95,16 @@ class Bot extends BaseBot{
           
             }
           });
+    }
+
+    matchRecord(text) {
+        let dict = ['帮我记下', '记一下', '记得', '要提醒我', '记下', '添加提醒', '帮我记录', '记住', '记录'];
+        for (var i = 0; i < dict.length; ++i) {
+            if (text.indexOf(dict[i]) > -1) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
