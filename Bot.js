@@ -18,6 +18,7 @@ class Bot extends BaseBot{
         });
 
         this.addIntentHandler('recording', ()=>{
+            console.log('recording');
             if(!this.request.isDialogStateCompleted()) {
                 return this.nlu.setDelegate();
             }
