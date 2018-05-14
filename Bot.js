@@ -14,13 +14,13 @@ class Bot extends BaseBot{
             //console.log(postData);
             let text = postData['request']['query']['original']
             let card = new Bot.Card.TextCard(text);
-            if (matchRecord(text)) {
+            if (this.matchRecord(text)) {
                 console.log('matchRecord');
-            } else if (matchReserve(text)) {
+            } else if (this.matchReserve(text)) {
 
-            } else if (matchRemind(text)) {
+            } else if (this.matchRemind(text)) {
 
-            } else if (matchRecall(text)) {
+            } else if (this.matchRecall(text)) {
 
             }
             console.log(text)
