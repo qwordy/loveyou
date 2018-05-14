@@ -106,6 +106,10 @@ class Bot extends BaseBot{
         }
         return false;
     }
+
+    matchReserve(text) {}
+    matchRemind(text) {}
+    matchRecall(text) {}
 }
 
 module.exports = Bot;
