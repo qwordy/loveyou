@@ -12,7 +12,7 @@ class Bot extends BaseBot{
 
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             //console.log(postData);
-            console.log(postDate['request']['query']['original'])
+            console.log(postData['request']['query']['original'])
             //return {
               //  outputSpeech: '缺省意图'
             //}
