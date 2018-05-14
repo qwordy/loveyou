@@ -17,18 +17,27 @@ class Bot extends BaseBot{
             //}
         });
 
-        this.addIntentHandler('record', ()=>{
+        this.addIntentHandler('recording', ()=>{
+            if(!this.request.isDialogStateCompleted()) {
+                return this.nlu.setDelegate();
+            }
             let date = this.getSlot('sys.date');
+            let action = this.getSlot('action');
+            console.log(date);
+            console.log(action);
+            let card = new Bot.Card.TextCard('好的记下了呢');
+            return {
+                card: card,
+                outputSpeech: '好的'
+            };
+        });
         
-            if (!action) {
-                let card = new Bot.Card.TextCard('你要做什么');
-                return {
-                    card: card,
-                    outputSpeech: '你要做什么'
-                };
+        this.addIntentHandler('query_event', ()=>{
+            if(!this.request.isDialogStateCompleted()) {
+                return this.nlu.setDelegate();
             }
         });
-          
+
         this.addIntentHandler('personal_income_tax.inquiry', ()=>{
             let loc = this.getSlot('location');    
             let monthlySalary = this.getSlot('monthlysalary');
