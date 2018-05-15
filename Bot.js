@@ -25,7 +25,7 @@ class Bot extends BaseBot{
                     console.log('时间：'+ time);
                     var gap = this.getDateGap(time);
                     if (typeof(gap) != undefined) {
-                        time = addDateFromNow('d', gap);
+                        time = this.addDateFromNow('d', gap);
                         console.log('Actual time: '+time);
                     } else {
                       console.log('Relative Date Unknown, put raw data in');
@@ -162,7 +162,7 @@ class Bot extends BaseBot{
       }
     }
     addDateFromNow(interval, number) {
-      return addDate(interval, number, new Date());
+      return this.addDate(interval, number, new Date());
     }
 
     //calculate difference between 2 date
