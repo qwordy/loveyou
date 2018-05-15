@@ -21,7 +21,15 @@ class Bot extends BaseBot{
                 console.log("matchReserve@"+pos);
                 var pos2 = text.indexOf('去');
                 if (pos2 > 0) {
-                    console.log('时间：'+text.substring(pos+2, pos2));
+                    var time = text.substring(pos+2, pos2);
+                    console.log('时间：'+ time);
+                    var gap = this.getDateGap(time);
+                    if (typeof(gap) != undefined) {
+                        time = addDateFromNow('d', gap);
+                        console.log('Actual time: '+time);
+                    } else {
+                      console.log('Relative Date Unknown, put raw data in');
+                    }
                     console.log('动作：'+text.substring(pos2));
                 }else {
                     console.log('total: '+text.substring(pos+2));
@@ -129,6 +137,32 @@ class Bot extends BaseBot{
     }
     matchRemind(text) {}
     matchRecall(text) {}
+    let relativeDays = [
+      ['明天', 1],['后天',2],['大后天',3],['下周',7],['下个月',30],
+      ['昨天', -1], ['前天',-2],['大前天',-3],['上周',-7],['上个月',-30]
+  ]
+    let relativeDaysMap = new HashMap(relativeDays);
+
+    getDateGap(dayText) {
+      return relativeDaysMap.get(dayText);
+    }
+
+//add number of date gap, get Date object
+    addDate(interval,number,date){
+      switch(interval.toLowerCase()){
+      case "y": return new Date(date.setFullYear(date.getFullYear()+number));
+      case "m": return new Date(date.setMonth(date.getMonth()+number));
+      case "d": return new Date(date.setDate(date.getDate()+number));
+      case "w": return new Date(date.setDate(date.getDate()+7*number));
+      case "h": return new Date(date.setHours(date.getHours()+number));
+      case "n": return new Date(date.setMinutes(date.getMinutes()+number));
+      case "s": return new Date(date.setSeconds(date.getSeconds()+number));
+      case "l": return new Date(date.setMilliseconds(date.getMilliseconds()+number));
+      }
+    }
+    addDateFromNow(interval, number) {
+      return addDate(interval, number, new Date());
+    }
 }
 
 module.exports = Bot;
