@@ -1,5 +1,5 @@
 var BaseBot = require('bot-sdk');
-
+var HashMap = require('hashmap');
 class Bot extends BaseBot{
     constructor (postData) {
         super(postData);
@@ -164,6 +164,21 @@ class Bot extends BaseBot{
     addDateFromNow(interval, number) {
       return addDate(interval, number, new Date());
     }
+
+    //calculate difference between 2 date
+    diffDate(interval,date1,date2){
+        var long = date2.getTime() - date1.getTime(); //相差毫秒
+        switch(interval.toLowerCase()){
+          case "y": return parseInt(date2.getFullYear() - date1.getFullYear());
+          case "m": return parseInt((date2.getFullYear() - date1.getFullYear())*12 + (date2.getMonth()-date1.getMonth()));
+          case "d": return parseInt(long/1000/60/60/24);
+          case "w": return parseInt(long/1000/60/60/24/7);
+          case "h": return parseInt(long/1000/60/60);
+          case "n": return parseInt(long/1000/60);
+          case "s": return parseInt(long/1000);
+          case "l": return parseInt(long);
+        }
+      }
 }
 
 module.exports = Bot;
