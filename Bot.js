@@ -138,14 +138,14 @@ class Bot extends BaseBot{
     }
     matchRemind(text) {}
     matchRecall(text) {}
-    let relativeDays = [
+    relativeDays(){return [
       ['明天', 1],['后天',2],['大后天',3],['下周',7],['下个月',30],
       ['昨天', -1], ['前天',-2],['大前天',-3],['上周',-7],['上个月',-30]
-  ]
-    let relativeDaysMap = new HashMap(relativeDays);
+  ]}
+    relativeDaysMap() {return new HashMap(this.relativeDays())};
 
     getDateGap(dayText) {
-      return relativeDaysMap.get(dayText);
+      return this.relativeDaysMap().get(dayText);
     }
 
 //add number of date gap, get Date object
