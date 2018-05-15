@@ -127,8 +127,9 @@ class Bot extends BaseBot{
 
     matchReserve(text) {
         let dict = ['预订','预设','设定','预约'];
+        let pos  =   - 1;
         for (var i = 0; i < dict.length; ++i) {
-          let pos = text.indexOf(dict[i]);
+            pos = text.indexOf(dict[i]);
             if (pos > -1) {
                 return pos;
             }
