@@ -6,8 +6,8 @@ class SqlUtil {
   }
 
   insert(time, alias, event, feeling, done) {
-    db.serialize(function() {
-      var stmt = db.prepare('insert into calendar(time, alias, event, feeling, done) values(?, ?, ?, ?, ?)');
+    this.db.serialize(function() {
+      var stmt = this.db.prepare('insert into calendar(time, alias, event, feeling, done) values(?, ?, ?, ?, ?)');
       stmt.run(time, alias, event, feeling, done);
       stmt.finalize();
     });
