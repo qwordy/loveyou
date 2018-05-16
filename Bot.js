@@ -1,8 +1,11 @@
 var BaseBot = require('bot-sdk');
 var HashMap = require('hashmap');
+var SqlUtil = require('./SqlUtil');
+
 class Bot extends BaseBot{
     constructor (postData) {
         super(postData);
+        this.sqlUtil = new SqlUtil();
 
         this.addIntentHandler('LaunchRequest', ()=>{
             return {
