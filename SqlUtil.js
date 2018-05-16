@@ -17,7 +17,8 @@ class SqlUtil {
   query(beginTime, endTime, priority, callback) {
     var db = this.db;
     db.serialize(function() {
-      db.all('SELECT * from calendar where time >= ' + beginTime + ' and time <= ' + endTime, function(err, rows) {
+      db.all('SELECT * from calendar where time >= ' + beginTime + ' and time <= ' + endTime
+      + " and priority=" + priority, function(err, rows) {
         callback(rows);
       });
     });
