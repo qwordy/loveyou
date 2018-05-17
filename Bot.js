@@ -69,8 +69,10 @@ class Bot extends BaseBot{
                     this.endSession();
                     return this.makeTextCard('好的')
                 } else {    // answer not clear
-
-
+                    let formatTime = this.getSessionAttribute('formatTime');
+                    let event = this.getSessionAttribute('event');
+                    this.waitAnswer();
+                    return this.makeTextCard('好的，您是要记录' + time + event + '吗？');
                 }
             } else if (s1 == 2) {   // wait for event
                 let event = text;
