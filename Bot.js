@@ -19,11 +19,26 @@ class Bot extends BaseBot{
             };
         });
 
+        /**
+         * s1 is a status variable
+         * 0: waiting new intent
+         * 1:
+         * 2:
+         */
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             let s1 = this.getSessionAttribute('s1', 0)
-            console.log(s1);
+            console.log('s1: ' + s1);
+            if (s1 == 0) {
+                if (this.matchRecord(text)) {
+                    time = ''
+                    event = ''
+
+                }
+            }
+
             this.setSessionAttribute('s1', s1 + 1);
             this.waitAnswer();
+
             //console.log(postData);
             let text = postData['request']['query']['original']
             //let card = new Bot.Card.TextCard(text);
@@ -130,14 +145,81 @@ class Bot extends BaseBot{
           });
     }
 
+    matchAsk(text) {
+
+    }
+
+    /**
+     * @param {string} time 
+     * @returns Time in format like '20180515000000'
+     */
+    convertTime(time) {
+        return '';
+    }
+
+    /**
+     * @returns [start position(-1 on failure), word length]
+     * @param {*} text 
+     * @param {*} dict 
+     */
+    findPos(text, dict) {
+        let pos = -1;
+        for (let i = 0; i < dict.length; i++) {
+            pos = text.indexOf(dict[i]);
+            if (pos > -1) return [pos, dict[i].length];
+        }
+        return [pos, 0];
+    }
+
+    matchTime(text) {
+        let dict = [
+            '今天',
+            '昨天',
+            '前天',
+            '大前天',
+            '明天',
+            '后天',
+            '大后天',
+            '星期一',
+            '星期二',
+            '星期三',
+            '星期四',
+            '星期五',
+            '星期六',
+            '星期日',
+            '星期天',
+            '周一',
+            '周二',
+            '周三',
+            '周四',
+            '周五',
+            '周六',
+            '周日',
+            '周天',
+            '周末',
+            '礼拜一',
+            '礼拜二',
+            '礼拜三',
+            '礼拜四',
+            '礼拜五',
+            '礼拜六',
+            '礼拜日',
+            '礼拜天',
+            '上周',
+            '下周',
+            '上个月',
+            '下个月',
+            '春节',
+            '情人节',
+            '元旦',
+            '国庆节'
+        ];
+        return this.findPos(text, dict);
+    }
+
     matchRecord(text) {
         let dict = ['帮我记下', '记一下', '记得', '要提醒我', '记下', '添加提醒', '帮我记录', '记住', '记录'];
-        for (var i = 0; i < dict.length; ++i) {
-            if (text.indexOf(dict[i]) > -1) {
-                return true;
-            }
-        }
-        return false;
+        return this.findPos(text, dict)[0] > -1;
     }
 
     matchReserve(text) {
