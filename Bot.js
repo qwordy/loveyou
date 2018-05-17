@@ -19,7 +19,7 @@ class Bot extends BaseBot{
         });
 
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
-            s1 = this.getSessionAttribute('s1')
+            let s1 = this.getSessionAttribute('s1')
             console.log(s1);
             this.setSessionAttribute('s1', s1 + 1);
             //console.log(postData);
