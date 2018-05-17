@@ -19,7 +19,9 @@ class Bot extends BaseBot{
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             //console.log(postData);
             let text = postData['request']['query']['original']
-            let card = new Bot.Card.TextCard(text);
+            //let card = new Bot.Card.TextCard(text);
+            let card = new Bot.Card.ImageCard();
+            card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
             var pos;
             if (this.matchRecord(text)) {
                 console.log('matchRecord');
