@@ -21,17 +21,46 @@ class Bot extends BaseBot{
 
         /**
          * s1 is a status variable
+         * State:
          * 0: waiting new intent
-         * 1:
-         * 2:
+         * 1: ask for comfirm
+         * 2: ask for event
+         * 3: ask for time
+         * 
+         * Transform:
+         * 0 -> 1, when we find time and event
+         * 0 -> 2, when time or event not found 
+         * 2 -> 3, always
+         * 3 -> 1, always
+         * 1 -> 0, when answer is yes or no
+         * 1 -> 1, when cannot decide whether answer is yes or no
          */
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             let s1 = this.getSessionAttribute('s1', 0)
             console.log('s1: ' + s1);
             if (s1 == 0) {
                 if (this.matchRecord(text)) {
-                    time = ''
-                    event = ''
+                    let timeResult = this.matchTime(text);
+                    let pos = timeResult[0];
+                    let time = timeResult[1];
+                    let event = text.substr(pos + time.length);
+                    if (time == '' || event == '') {
+                        this.setSessionAttribute('s1', 2);
+                        return this.makeTextCard('请问您要记录的事件是？');
+                    } else {
+                        let formatedTime = this.formatTime(time);
+                        this.setSessionAttribute('s1', 1);
+                        this.setSessionAttribute('time', time);
+                        this.setSessionAttribute('formatTime', time);
+                        this.setSessionAttribute('event', event);
+                        return this.makeTextCard('您是要记录' + time + event + '吗？');
+                    }
+
+                }
+            } else if (s1 == 1) {
+                if (this.matchYes(text)) {
+
+                } else if (this.matchNo(test)) {
 
                 }
             }
@@ -145,32 +174,41 @@ class Bot extends BaseBot{
           });
     }
 
-    matchAsk(text) {
-
+    makeTextCard(text) {
+        return {
+            card: new Bot.Card.TextCard(text),
+            outputSpeech: text
+        }
     }
 
+    matchAsk(text) {}
+
     /**
-     * @param {string} time 
+     * @param {String} time 
      * @returns Time in format like '20180515000000'
      */
-    convertTime(time) {
+    formatTime(time) {
         return '';
     }
 
     /**
-     * @returns [start position(-1 on failure), word length]
-     * @param {*} text 
-     * @param {*} dict 
+     * @returns [start position(-1 on failure), word]
+     * @param {String} text 
+     * @param {String[]} dict 
      */
     findPos(text, dict) {
         let pos = -1;
         for (let i = 0; i < dict.length; i++) {
             pos = text.indexOf(dict[i]);
-            if (pos > -1) return [pos, dict[i].length];
+            if (pos > -1) return [pos, dict[i]];
         }
-        return [pos, 0];
+        return [pos, ''];
     }
 
+    /**
+     * 
+     * @param {String} text 
+     */
     matchTime(text) {
         let dict = [
             '今天',
