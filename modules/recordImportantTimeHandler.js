@@ -1,4 +1,4 @@
-
+function f(text){
             var pos;
             if (this.matchRecord(text)) {
                 console.log('matchRecord');
@@ -31,3 +31,4 @@
                 card: card,
                 outputSpeech: text
             }
+          }

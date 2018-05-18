@@ -54,12 +54,12 @@ class Common {
 
     //是否疑问句
     isQuestion(text) {
-      arr = ['什么', '吗', '哪', '啥', '神马'];
+      let arr = ['什么', '吗', '哪', '啥', '神马'];
       return this._isFound(arr, text);
     }
     // 是否问最近的
     isRecent(text) {
-      arr = [ '最近','这两天','几天'];
+      let arr = [ '最近','这两天','几天'];
       return this._isFound(arr, text);
     }
 

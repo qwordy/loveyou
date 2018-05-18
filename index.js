@@ -3,7 +3,7 @@
  */
 
 const express = require('express');
-const bot = require('./Bot')
+const Bot = require('./Bot');
 var app = express();
 
 // 探活请求

@@ -1,19 +1,23 @@
-// 注册意图Handler
+﻿// 注册意图Handler
 // ./handlers文件夹下包含处理函数
+<<<<<<< HEAD
 require('hashmap');
 require('./Bot');
 require('./config/Common');
 require('./models/State');
 var reserveRequestHandler = require('./modules/reserveRequestHandler');
 var recordImportantTimeHandler = require('./modules/recordImportantTimeHandler');
-var Common = new Common();
+var Common = new Common_();
 var HandlersMap = new HashMap();
-var State = new State();
+var State = new State_();
 class Dispatcher {
   constructor(bot) {
     this.bot = bot;
     this.registerIntent(Common.STATE_RESERVE_REMINDER, reserveRequestHandler);
     this.registerIntent(Common.STATE_RECORD_IMPORTANT_TIME, recordImportantTimeHandler);
+    this.registerIntent(Common.STATE_ASK_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
+    this.registerIntent(Common.STATE_RECALL_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
+    this.registerIntent(Common.STATE_RECORD_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
   }
 
   //中控函数，负责解析意图, 并派发给对应的Handler
@@ -31,7 +35,7 @@ class Dispatcher {
       //陈述句
       }else {
         if(Common.isRecording(input)) {
-          HandlersMap.get(State.STATE_RECORD_EVENT)(this.bot, input);
+          HandlersMap.get(State.STATE_RECORD_EVENT).call(this.bot, input);
         }else if(Common.isReserving(input)) {
           HandlersMap.get(State.STATE_RESERVE_REMINDER)(this.bot, input);
         }else {
