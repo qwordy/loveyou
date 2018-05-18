@@ -41,6 +41,7 @@ class Bot extends BaseBot{
          */
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             console.log('Default intent');
+            let text = postData['request']['query']['original'];
             let s1 = this.getSessionAttribute('s1', 0);
             console.log('s1: ' + s1);
             if (s1 == 0) {  // wait new intent
@@ -98,7 +99,6 @@ class Bot extends BaseBot{
             this.waitAnswer();
 
             //console.log(postData);
-            let text = postData['request']['query']['original']
             //let card = new Bot.Card.TextCard(text);
             let card = new Bot.Card.ImageCard();
             card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
