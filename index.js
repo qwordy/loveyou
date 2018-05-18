@@ -1,3 +1,7 @@
+/**
+ * 入口程序
+ */
+
 const express = require('express');
 
 const Bot = require('./Bot');

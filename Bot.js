@@ -1,3 +1,7 @@
+/**
+ * 主程序逻辑
+ */
+
 var BaseBot = require('bot-sdk');
 var HashMap = require('hashmap');
 var SqlUtil = require('./SqlUtil');
