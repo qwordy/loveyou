@@ -258,7 +258,7 @@ class Bot extends BaseBot{
     }
 
     /**
-     * If text == any word of dict
+     * If text === any word of dict
      * @param {String} text 
      * @param {String[]} dict 
      */
