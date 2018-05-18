@@ -28,6 +28,7 @@ app.post('/', (req, res) => {
     });
 
     req.on('end', function() {
+        console.log(req.rawBody);
         var b = new Bot(JSON.parse(req.rawBody));
         // 开启签名认证
         // 为了避免你的服务被非法请求，建议你验证请求是否来自于DuerOS
@@ -53,7 +54,6 @@ app.post('/', (req, res) => {
 
         
         // 不需要监控
-        b.run() //返回一个Promise的实例
         b.run().then(function(result){
            res.send(result);
         });

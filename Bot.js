@@ -10,8 +10,9 @@ class Bot extends BaseBot{
     constructor (postData) {
         super(postData);
         this.sqlUtil = new SqlUtil();
+        console.log('Bot ctor');
 
-        this.addIntentHandler('LaunchRequest', ()=>{
+        this.addLaunchHandler(()=>{
             console.log('LaunchRequest');
             let card = new Bot.Card.ImageCard();
             card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
@@ -19,7 +20,7 @@ class Bot extends BaseBot{
             this.waitAnswer();
             return {
                 card: card,
-                outputSpeech: '欢迎使用有爱'
+                outputSpeech: '有爱，呵呵哒'
             };
         });
 
@@ -40,7 +41,10 @@ class Bot extends BaseBot{
          * 1 -> 1, when cannot deciding answer, ask confirmation again
          */
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
-            let s1 = this.getSessionAttribute('s1', 0)
+            console.log('Default intent');
+            let text = postData['request']['query']['original'];
+            console.log(text);
+            let s1 = this.getSessionAttribute('s1', 0);
             console.log('s1: ' + s1);
             if (s1 == 0) {  // wait new intent
                 if (this.matchRecord(text)) {
@@ -69,7 +73,7 @@ class Bot extends BaseBot{
                     // todo: write db
                     this.endSession();
                     return this.makeTextCard('好的，已记录')
-                } else if (this.matchNo(test)) {    // answer is no
+                } else if (this.matchNo(text)) {    // answer is no
                     this.endSession();
                     return this.makeTextCard('好的')
                 } else {    // answer not clear
@@ -93,11 +97,12 @@ class Bot extends BaseBot{
                 return this.makeTextCard('好的，您是要记录' + time + event + '吗？');
             }
 
+            return;
+
             this.setSessionAttribute('s1', s1 + 1);
             this.waitAnswer();
 
             //console.log(postData);
-            let text = postData['request']['query']['original']
             //let card = new Bot.Card.TextCard(text);
             let card = new Bot.Card.ImageCard();
             card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
