@@ -54,7 +54,6 @@ app.post('/', (req, res) => {
 
         
         // 不需要监控
-        b.run() //返回一个Promise的实例
         b.run().then(function(result){
            res.send(result);
         });
