@@ -77,6 +77,7 @@ class Bot extends BaseBot{
                     this.endSession();
                     return this.makeTextCard('好的')
                 } else {    // answer not clear
+                    let time = this.getSessionAttribute('time');
                     let formatTime = this.getSessionAttribute('formatTime');
                     let event = this.getSessionAttribute('event');
                     this.waitAnswer();
