@@ -43,6 +43,7 @@ class Bot extends BaseBot{
             console.log('Default intent');
             let text = postData['request']['query']['original'];
             console.log(text);
+            return;
             let s1 = this.getSessionAttribute('s1', 0);
             console.log('s1: ' + s1);
             if (s1 == 0) {  // wait new intent
