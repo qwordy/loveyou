@@ -4,12 +4,16 @@ require('hashmap');
 require('Bot');
 require('./config/Common');
 require('./models/State');
+var reserveRequestHandler = require('./modules/reserveRequestHandler');
+var recordImportantTimeHandler = require('./modules/recordImportantTimeHandler');
 var Common = new Common();
 var HandlersMap = new HashMap();
 var State = new State();
 class Dispatcher {
   constructor(bot) {
     this.bot = bot;
+    this.registerIntent(Common.STATE_RESERVE_REMINDER, reserveRequestHandler);
+    this.registerIntent(Common.STATE_RECORD_IMPORTANT_TIME, recordImportantTimeHandler);
   }
 
   //中控函数，负责解析意图, 并派发给对应的Handler

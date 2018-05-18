@@ -7,17 +7,20 @@
 var BaseBot = require('bot-sdk');
 var HashMap = require('hashmap');
 var SqlUtil = require('./SqlUtil');
+var Dispatcher = require('./dispatcher');
 
 class Bot extends BaseBot{
     constructor (postData) {
         super(postData);
         this.sqlUtil = new SqlUtil();
+        this.dispatcher = new Dispatcher(this);
         // console.log('Bot ctor');
 
         this.addLaunchHandler(()=>{
             console.log('LaunchRequest');
             let card = new Bot.Card.ImageCard();
             card.addItem('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526643927543&di=bf879630cece61edba1a4d353ead06e8&imgtype=0&src=http%3A%2F%2Fn1image.hjfile.cn%2Fmh%2F2017%2F02%2F23%2Ff3eb90ab776791a3d5cb4879ae91fbd0.jpg');
+            //card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
             this.setSessionAttribute('s1', 0);
             this.waitAnswer();
             return {
@@ -27,168 +30,29 @@ class Bot extends BaseBot{
         });
 
         /**
-         * s1 is a status variable
-         * State:
-         * 0: wait new intent
-         * 1: wait for comfirmation
-         * 2: wait for event
-         * 3: wait for time
-         * 
-         * Transform:
-         * 0 -> 1, when we find time and event, ask confirmation
-         * 0 -> 2, when time or event not found, ask event
-         * 2 -> 3, always, ask time
-         * 3 -> 1, always, ask confirmation
-         * 1 -> 0, when answer is yes or no
-         * 1 -> 1, when cannot deciding answer, ask confirmation again
+         * Handle all requests
          */
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             console.log('Default intent');
             let text = postData['request']['query']['original'];
             console.log(text);
-            let s1 = this.getSessionAttribute('s1', 0);
-            console.log('s1: ' + s1);
-            if (s1 == 0) {  // wait new intent
-                if (this.matchRecord(text)) {
-                    let timeResult = this.matchTime(text);
-                    let pos = timeResult[0];
-                    let time = timeResult[1];
-                    let event = text.substr(pos + time.length);
-                    if (time == '' || event == '') {    // incomplete info
-                        this.setSessionAttribute('s1', 2);
-                        this.waitAnswer();
-                        return this.makeTextCard('请问您要记录的事件是？');
-                    } else {    // enough info
-                        let formatedTime = this.formatTime(time);
-                        this.setSessionAttribute('s1', 1);
-                        this.setSessionAttribute('time', time);
-                        this.setSessionAttribute('formatTime', formatedTime);
-                        this.setSessionAttribute('event', event);
-                        this.waitAnswer();
-                        return this.makeTextCard('好的，您是要记录' + time + event + '吗？');
-                    }
-                }
-            } else if (s1 == 1) {   // wait for comfirm
-                if (this.matchYes(text)) {  // answer is yes
-                    let formatTime = this.getSessionAttribute('formatTime');
-                    let event = this.getSessionAttribute('event');
-                    // todo: write db
-                    this.endSession();
-                    return this.makeTextCard('好的，已记录');
-                } else if (this.matchNo(text)) {    // answer is no
-                    this.endSession();
-                    return this.makeTextCard('好的，不记录了');
-                } else {    // answer not clear
-                    let time = this.getSessionAttribute('time');
-                    let formatTime = this.getSessionAttribute('formatTime');
-                    let event = this.getSessionAttribute('event');
-                    this.waitAnswer();
-                    return this.makeTextCard('什么，您是要记录' + time + event + '吗？');
-                }
-            } else if (s1 == 2) {   // wait for event
-                let event = text;
-                this.setSessionAttribute('event', event);
-                this.setSessionAttribute('s1', 3);
-                this.waitAnswer();
-                return this.makeTextCard('请问时间是？');
-            } else if (s1 == 3) {   // wait for time
-                let time = text;
-                let formatTime = this.formatTime(text);
-                this.setSessionAttribute('time', time);
-                this.setSessionAttribute('formatTime', formatTime);
-                let event = this.getSessionAttribute('event');
-                this.setSessionAttribute('s1', 1);
-                this.waitAnswer();
-                return this.makeTextCard('好的，您是要记录' + time + event + '吗？');
-            }
+            this.dispatcher.parseIntent(text);
 
             return;
-
-            this.setSessionAttribute('s1', s1 + 1);
-            this.waitAnswer();
-
-            //console.log(postData);
-            //let card = new Bot.Card.TextCard(text);
-            let card = new Bot.Card.ImageCard();
-            card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
-            var pos;
-            if (this.matchRecord(text)) {
-                console.log('matchRecord');
-            } else if ((pos = this.matchReserve(text)) >= 0) {
-                console.log("matchReserve@"+pos);
-                var pos2 = text.indexOf('去');
-                if (pos2 > 0) {
-                    var time = text.substring(pos+2, pos2);
-                    console.log('时间：'+ time);
-                    var gap = this.getDateGap(time);
-                    if (typeof(gap) != undefined) {
-                        time = this.addDateFromNow('d', gap);
-                        console.log('Actual time: '+time);
-                    } else {
-                      console.log('Relative Date Unknown, put raw data in');
-                    }
-                    console.log('动作：'+text.substring(pos2));
-                }else {
-                    console.log('total: '+text.substring(pos+2));
-                }
-            } else if (this.matchRemind(text)) {
-                console.log('match matchRemind');
-            } else if (this.matchRecall(text)) {
-                console.log('match matchRecall');
-            }else {
-              console.log("nothing matched!");
-            }
-            console.log(text)
-            return {
-                card: card,
-                outputSpeech: text
-            }
         });
 
+        /**
+         * Use system dictionary to extract time
+         */
         this.addIntentHandler('extract_time', ()=>{
+            /*
+            //这两个信息slot可以在handler里面通过bot.getSlot()获取
             let time = this.getSlot('sys.date-time');
-            let date = this.getSlot('sys.date');
+            let date = this.getSlot('sys.date');*/
 
-        });
-
-        this.addIntentHandler('recording', ()=>{
-            console.log('recording');
-            if(!this.request.isDialogStateCompleted()) {
-                return this.nlu.setDelegate();
-            }
-            let date = this.getSlot('sys.date');
-            let action = this.getSlot('action');
-            console.log(date);
-            console.log(action);
-            console.log(this.request.getData())
-            let card = new Bot.Card.TextCard('好的记下了呢');
-            return {
-                card: card,
-                outputSpeech: '好的'
-            };
-        });
-
-        this.addIntentHandler('apprRecord', ()=>{
-            console.log('apprRecord');
-            if(!this.request.isDialogStateCompleted()) {
-                return this.nlu.setDelegate();
-            }
-            let date = this.getSlot('sys.date');
-            let holiday = this.getSlot('sys.holiday');
-            console.log(date);
-            console.log(holiday);
-            console.log(this.request.getData())
-            let card = new Bot.Card.TextCard('好的记下了呢');
-            return {
-                card: card,
-                outputSpeech: '提醒已经设置成功'
-            };
-        });
-
-        this.addIntentHandler('query_event', ()=>{
-            if(!this.request.isDialogStateCompleted()) {
-                return this.nlu.setDelegate();
-            }
+            let text = postData['request']['query']['original'];
+            console.log(text);
+            this.dispatcher.parseIntent(text);
         });
 
         this.addIntentHandler('personal_income_tax.inquiry', ()=>{
