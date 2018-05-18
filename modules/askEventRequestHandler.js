@@ -1,4 +1,4 @@
-var SqlUtil = require('./SqlUtil');
+var SqlUtil = require('../SqlUtil');
 var Common = require('../config/common');
 var TIME_WINDOW = 21; //3weeks in future
 
@@ -12,8 +12,8 @@ function handleAskEventRequest (bot, input) {
     console.log('askEventRequest');
 
     queryInfo = parseQuery(input);
-    rows = query(queryInfo[],queryInfo[],queryInfo[]).processResult();
-
+    rows = query(queryInfo.beg, queryInfo.end, queryInfo.prio).processResult();
+    
     // TODO 返回结果给用户
     text = "";
     for (const i in rows) {
@@ -29,11 +29,32 @@ function handleAskEventRequest (bot, input) {
     return common.makeTextCard(text);
     
 }
+//日期格式化
+Date.prototype.format = function(fmt) { 
+  var o = { 
+     "M+" : this.getMonth()+1,                 //月份 
+     "d+" : this.getDate(),                    //日 
+     "h+" : this.getHours(),                   //小时 
+     "m+" : this.getMinutes(),                 //分 
+     "s+" : this.getSeconds(),                 //秒 
+     "q+" : Math.floor((this.getMonth()+3)/3), //季度 
+     "S"  : this.getMilliseconds()             //毫秒 
+     }; 
+     if(/(y+)/.test(fmt)) {
+             fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+     }
+      for(var k in o) {
+         if(new RegExp("("+ k +")").test(fmt)){
+              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+          }
+      }
+     return fmt; 
+}
 
 function parseQuery (input) {
     // TODO 处理请求得到开始时间、终止时间和重要性
     var beginTime =  new Date().format("yyyyMMddhhmmss");
-    var endTime = addDateFromNow(TIME_WINDOW).format("yyyyMMddhhmmss");
+    var endTime = common.addDateFromNow(TIME_WINDOW).format("yyyyMMddhhmmss");
     var priority = 2;
     return  {
         'beg' : beginTime,

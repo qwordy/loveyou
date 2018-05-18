@@ -27,9 +27,9 @@ class Dispatcher {
       //疑问句
       if (Common.isQuestion(input)) {
         if (Common.isRecent(input)) {
-          HandlersMap.get(State.STATE_ASK_EVENT)(this.bot, input); //handle intent
+          HandlersMap[State.STATE_ASK_EVENT](this.bot, input); //handle intent
         }else {
-          HandlersMap.get(State.STATE_RECALL_EVENT)(this.bot, input); //handle intent
+          HandlersMap[State.STATE_RECALL_EVENT](this.bot, input); //handle intent
         }
       //陈述句
       }else {
@@ -39,9 +39,9 @@ class Dispatcher {
          console.log(typeof(fun));
          fun(this.bot, input);
         }else if(Common.isReserving(input)) {
-          HandlersMap.get[State.STATE_RESERVE_REMINDER](this.bot, input);
+          HandlersMap[State.STATE_RESERVE_REMINDER](this.bot, input);
         }else {
-          HandlersMap.get(State.STATE_RECORD_EVENT)(this.bot, input);
+          HandlersMap[State.STATE_RECORD_EVENT](this.bot, input);
         }//else {
           //TODO delegate to DuerOS
         //}
@@ -51,7 +51,7 @@ class Dispatcher {
     } else {
       //获得意图开始 数字位
        var intentId = this.bot.getSessionAttribute('state');
-       HandlersMap.get(intentId)(this.bot, input);
+       HandlersMap[intentId](this.bot, input);
     }
 
     //调用map中的handler 函数
