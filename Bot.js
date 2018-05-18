@@ -260,7 +260,7 @@ class Bot extends BaseBot{
      */
     exactMatch(text, dict) {
         for (let word of dict) 
-            if (text == dict) return true;
+            if (text === word) return true;
         return false;
     }
 
