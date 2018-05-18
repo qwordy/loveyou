@@ -1,5 +1,5 @@
 var BaseBot = require('bot-sdk');
-let handlers = require('./dispatch').handlers
+let handlers = require('./dispatch').dispatcher
 
 
 class LoveYouApp extends BaseBot{
@@ -9,14 +9,9 @@ class LoveYouApp extends BaseBot{
      */
     constructor (postData, handlers) {
         super(postData);
-        this.addIntentHandlers(handlers);
+        this.addIntentHandler('ai.dueros.common.default_intent', dispatcher);
     }
 
-    addIntentHandlers(handlers) {
-        for (let handler of handlers.entries()) {
-            this.addIntentHandler(handler[0], handler[1]);
-        }
-    }
 
 } // LoveYouApp
 
