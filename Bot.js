@@ -71,7 +71,7 @@ class Bot extends BaseBot{
                     // todo: write db
                     this.endSession();
                     return this.makeTextCard('好的，已记录')
-                } else if (this.matchNo(test)) {    // answer is no
+                } else if (this.matchNo(text)) {    // answer is no
                     this.endSession();
                     return this.makeTextCard('好的')
                 } else {    // answer not clear
