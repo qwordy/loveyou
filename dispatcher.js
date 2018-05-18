@@ -1,12 +1,12 @@
 ﻿// 注册意图Handler
 // ./handlers文件夹下包含处理函数
-<<<<<<< HEAD
 require('hashmap');
 require('./Bot');
 require('./config/Common');
 require('./models/State');
 var reserveRequestHandler = require('./modules/reserveRequestHandler');
 var recordImportantTimeHandler = require('./modules/recordImportantTimeHandler');
+var askEventRequestHandler = require('./modules/askEventRequestHandler');
 var Common = new Common_();
 var HandlersMap = {};
 var State = new State_();
@@ -15,7 +15,7 @@ class Dispatcher {
     this.bot = bot;
     HandlersMap[State.STATE_RESERVE_REMINDER] = reserveRequestHandler;
     HandlersMap[State.STATE_RECORD_IMPORTANT_TIME] = recordImportantTimeHandler;
-    HandlersMap[State.STATE_ASK_EVENT], (a, b)=>{console.log("construct disp");};
+    HandlersMap[State.STATE_ASK_EVENT] = askEventRequestHandler;
     HandlersMap[State.STATE_RECALL_EVENT], (a, b)=>{this.bot.makeTextcard('呵呵');};
     HandlersMap[State.STATE_RECORD_EVENT] = (a, b)=>{console.log("event created");};
   }
@@ -34,6 +34,7 @@ class Dispatcher {
         }
       //陈述句
       }else {
+        //记录重要事件
         if(Common.isRecording(input)) {
          var fun =  HandlersMap[State.STATE_RECORD_EVENT];
          console.log(typeof(fun));
