@@ -12,7 +12,10 @@ function handleAskEventRequest (bot, input) {
     console.log('askEventRequest');
 
     queryInfo = parseQuery(input);
-    rows = query(queryInfo.beg, queryInfo.end, queryInfo.prio).processResult();
+    rows = query(queryInfo.beg, queryInfo.end, queryInfo.prio);
+    console.log('query -> ', rows);
+    rows = processResult(rows);
+    console.log('processResult -> ', rows);
     
     // TODO 返回结果给用户
     text = "";
@@ -55,6 +58,7 @@ function parseQuery (input) {
     // TODO 处理请求得到开始时间、终止时间和重要性
     var beginTime =  new Date().format("yyyyMMddhhmmss");
     var endTime = common.addDateFromNow('d', TIME_WINDOW).format("yyyyMMddhhmmss");
+
     var priority = 2;
     return  {
         'beg' : beginTime,
