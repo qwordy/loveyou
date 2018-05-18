@@ -1,5 +1,6 @@
 var BaseBot = require('bot-sdk');
 let handlers = require('./dispatch').dispatcher
+var curSession = require('./models/SessionShared').curSession
 
 
 class LoveYouApp extends BaseBot{
