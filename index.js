@@ -3,11 +3,8 @@
  */
 
 const express = require('express');
-
-const LoveYouApp = require('./loveYouApp');
+const bot = require('./Bot')
 var app = express();
-global.app = app
-global.Bot = LoveYouApp
 
 // 探活请求
 // DuerOS会定期发送探活请求到你的服务，确保你的服务正常运转，[详情请参考](http://TODO)
@@ -30,13 +27,13 @@ app.post('/', (req, res) => {
     });
 
     req.on('end', function() {
-        var app = new LoveYouApp(JSON.parse(req.rawBody));
+        let bot = new Bot(JSON.parse(req.rawBody));
 
         // 开启签名认证
-        app.initCertificate(req.headers, req.rawBody).enableVerifyRequestSign();
+        // app.initCertificate(req.headers, req.rawBody).enableVerifyRequestSign();
        
         // 不需要监控
-        app.run().then(function(result){
+        bot.run().then(function(result){
            res.send(result);
         });
     });
