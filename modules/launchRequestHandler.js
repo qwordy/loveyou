@@ -9,7 +9,7 @@ function handleLaunchRequest () {
     global.app.waitAnswer();
     return {
         card: card,
-        outputSpeech: '欢迎使用有爱'
+        outputSpeech: '记录欢乐，解决烦恼，欢迎使用有爱'
     };
     
 }
