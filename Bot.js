@@ -42,6 +42,7 @@ class Bot extends BaseBot{
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
             console.log('Default intent');
             let text = postData['request']['query']['original'];
+            console.log(text);
             let s1 = this.getSessionAttribute('s1', 0);
             console.log('s1: ' + s1);
             if (s1 == 0) {  // wait new intent
@@ -94,6 +95,8 @@ class Bot extends BaseBot{
                 this.waitAnswer();
                 return this.makeTextCard('好的，您是要记录' + time + event + '吗？');
             }
+
+            return;
 
             this.setSessionAttribute('s1', s1 + 1);
             this.waitAnswer();
