@@ -2,7 +2,7 @@
 // ./handlers文件夹下包含处理函数
 var HashMap = require('hashmap');
 var Bot = require('./Bot');
-var Common_ = require('./config/Common');
+var Common_ = require('./config/common');
 var State_ = require('./models/State');
 var reserveRequestHandler = require('./modules/reserveRequestHandler');
 var recordImportantTimeHandler = require('./modules/recordImportantTimeHandler');
