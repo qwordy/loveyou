@@ -16,5 +16,5 @@ function parseIntent() {
     return intentName;
 }
 
-//module.exports.handlers = handlers;
+
 module.exports.dispatcher = dispatcher;
