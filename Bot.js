@@ -56,7 +56,7 @@ class Bot extends BaseBot{
                         this.setSessionAttribute('s1', 2);
                         this.waitAnswer();
                         return this.makeTextCard('请问您要记录的事件是？');
-                    } else {
+                    } else {    // enough info
                         let formatedTime = this.formatTime(time);
                         this.setSessionAttribute('s1', 1);
                         this.setSessionAttribute('time', time);
@@ -230,6 +230,7 @@ class Bot extends BaseBot{
              '不错',
              '嗯'
         ];
+        return this.findMatch(text, dict);
     }
 
     matchNo(text) {
@@ -240,6 +241,7 @@ class Bot extends BaseBot{
             '不',
             '不对',
         ];
+        return this.findMatch(text, dict);
     }
 
     /**
@@ -248,6 +250,16 @@ class Bot extends BaseBot{
      */
     formatTime(time) {
         return '';
+    }
+
+    /**
+     * If text has any word of dict
+     * @returns boolean
+     * @param {String} text 
+     * @param {String[]} dict 
+     */
+    findMatch(text, dict) {
+        return this.findPos(text, dict)[0] > -1;
     }
 
     /**
