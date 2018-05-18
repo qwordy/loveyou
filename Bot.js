@@ -10,6 +10,7 @@ class Bot extends BaseBot{
     constructor (postData) {
         super(postData);
         this.sqlUtil = new SqlUtil();
+        console.log('Bot ctor');
 
         this.addLaunchHandler(()=>{
             console.log('LaunchRequest');
