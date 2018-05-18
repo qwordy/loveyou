@@ -2,6 +2,8 @@
  * 主程序逻辑
  */
 
+'use strict';
+
 var BaseBot = require('bot-sdk');
 var HashMap = require('hashmap');
 var SqlUtil = require('./SqlUtil');
@@ -86,6 +88,7 @@ class Bot extends BaseBot{
             } else if (s1 == 2) {   // wait for event
                 let event = text;
                 this.setSessionAttribute('event', event);
+                this.setSessionAttribute('s1', 3);
                 this.waitAnswer();
                 return this.makeTextCard('请问时间是？');
             } else if (s1 == 3) {   // wait for time
@@ -94,6 +97,7 @@ class Bot extends BaseBot{
                 this.setSessionAttribute('time', time);
                 this.setSessionAttribute('formatTime', formatedTime);
                 let event = this.getSessionAttribute('event');
+                this.setSessionAttribute('s1', 1);
                 this.waitAnswer();
                 return this.makeTextCard('好的，您是要记录' + time + event + '吗？');
             }
