@@ -34,7 +34,7 @@ class Dispatcher {
       //陈述句
       }else {
         if(Common.isRecording(input)) {
-          HandlersMap.get(State.STATE_RECORD_EVENT)(this.bot, input);
+          HandlersMap.get(State.STATE_RECORD_EVENT).call(this.bot, input);
         }else if(Common.isReserving(input)) {
           HandlersMap.get(State.STATE_RESERVE_REMINDER)(this.bot, input);
         }else {
