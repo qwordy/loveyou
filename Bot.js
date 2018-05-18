@@ -11,7 +11,7 @@ class Bot extends BaseBot{
         super(postData);
         this.sqlUtil = new SqlUtil();
 
-        this.addLaunchHandler('LaunchRequest', ()=>{
+        this.addLaunchHandler(()=>{
             console.log('LaunchRequest');
             let card = new Bot.Card.ImageCard();
             card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
