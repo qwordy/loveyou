@@ -2,9 +2,12 @@
 公共词库
 公共函数
 */
-
+var Bot = require('../Bot');
 class Common {
   
+    constructor(bot) {
+        this.bot = bot;
+    }
     /**
     查找词库中是否有关键词
     **/
@@ -106,14 +109,8 @@ class Common {
           case "l": return parseInt(long);
         }
     }
-
-    makeTextCard(text) {
-      return {
-          card: new Bot.Card.TextCard(text),
-          outputSpeech: text
-      }
-    }
-  
+ 
+    
 }
 
 //日期格式化

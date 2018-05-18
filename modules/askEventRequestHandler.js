@@ -16,7 +16,7 @@ function handleAskEventRequest (bot, input) {
     async.waterfall(
             [
                //parse input
-               function(input, callback) {
+               function(callback) {
                  // TODO 处理请求得到开始时间、终止时间和重要性
                 var beginTime =  new Date().format("yyyyMMddhhmmss");
                 var endTime = common.addDateFromNow('d', TIME_WINDOW).format("yyyyMMddhhmmss");
@@ -52,7 +52,7 @@ function handleAskEventRequest (bot, input) {
                         text += rows[i].event;
                     }
                 }            
-                callback(error, text);
+                callback(null, text);
                }
 
                //handle final result
@@ -65,7 +65,14 @@ function handleAskEventRequest (bot, input) {
                 if (result.length == 0) 
                     result = "并没有什么重要的日子呢，尽力把每一天活得有点不一样吧";
                 console.log(result);
-                return common.makeTextCard(result);
+                //return bot.makeTextCard(result);
+                return new Promise(function(resolve, reject){
+                    resolve({
+                        card : bot.makeTextCard(result),
+                        outputSpeech : '你工资多少呢'
+                    });
+                });
+
             });
 }
 //日期格式化

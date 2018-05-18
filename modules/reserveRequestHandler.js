@@ -14,7 +14,7 @@
  * 1 -> 0, when answer is yes or no
  * 1 -> 1, when cannot deciding answer, ask confirmation again
  */
-
+var common = require('../config/common');
 module.exports = (bot, input) => {
   let s1 = bot.getSessionAttribute('s1', 0);
   console.log('s1: ' + s1);

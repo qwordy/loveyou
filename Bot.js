@@ -155,6 +155,14 @@ class Bot extends BaseBot{
         return [pos, ''];
     }
 
+    //make new card
+     makeTextCard(text) {
+      return {
+          card: new Bot.Card.TextCard(text),
+          outputSpeech: text
+      }
+    }
+
     /**
      * 
      * @param {String} text 
