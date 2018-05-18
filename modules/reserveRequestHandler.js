@@ -16,7 +16,7 @@
  */
 
 module.exports = (bot, input) => {
-  let s1 = this.getSessionAttribute('s1', 0);
+  let s1 = bot.getSessionAttribute('s1', 0);
   console.log('s1: ' + s1);
   if (s1 == 0) {  // wait new intent
       if (this.matchRecord(text)) {

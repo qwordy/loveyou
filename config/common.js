@@ -77,7 +77,7 @@ class Common {
 
     //add number of date gap, get Date object
     addDate(interval,number,date){
-      switch(interval.toLowerCase()){
+      switch(new String(interval).toLowerCase()){
       case "y": return new Date(date.setFullYear(date.getFullYear()+number));
       case "m": return new Date(date.setMonth(date.getMonth()+number));
       case "d": return new Date(date.setDate(date.getDate()+number));
