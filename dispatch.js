@@ -4,12 +4,24 @@
 var handlers = new Map();
 handlers.set('LaunchRequest', require('./modules/launchRequestHandler'));
 // ... add handlers
+var handlersProxy = new Proxy(handlers, {
+    get: function(target, key) {
+        return target.has(key) ? target.get(key) : target.get('DefaultRequest');
+    },
+});
+
 
 // 意图处理分发函数
 function dispatcher(input) {
-    
+    let intentName = parseIntent(input);
+
+    let handler = handlersProxy[intentName];
+    handler();
 }
 
+
+
+var curSession = require('./models/SessionShared').curSession
 // 分析意图，返回
 function parseIntent() {
     // TODO
