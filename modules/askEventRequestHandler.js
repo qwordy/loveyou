@@ -1,3 +1,4 @@
+var async = require('async')
 var SqlUtil = require('../SqlUtil');
 var Common = require('../config/common');
 var TIME_WINDOW = 21; //3weeks in future
@@ -8,29 +9,64 @@ var sqlUtil = new SqlUtil();
 // sqlUtil.insert('20180505120000', 'abc', 'def', '', 0, 0);
 // sqlUtil.query('20180501000000', '20180530000000', 1, function(rows) */
 
+var rows;
 function handleAskEventRequest (bot, input) {
     console.log('askEventRequest');
 
-    queryInfo = parseQuery(input);
-    rows = query(queryInfo.beg, queryInfo.end, queryInfo.prio);
-    console.log('query -> ', rows);
-    rows = processResult(rows);
-    console.log('processResult -> ', rows);
-    
-    // TODO 返回结果给用户
-    text = "";
-    for (const i in rows) {
-        if (rows[i].alias != undefined) {
-            text += rows[i].alias;
-        }else {
-            text += rows[i].date;
-        }
-        if (rows[i].event != undefined) {
-            text += rows[i].event;
-        }
-    }
-    return common.makeTextCard(text);
-    
+    async.waterfall(
+            [
+               //parse input
+               function(input, callback) {
+                 // TODO 处理请求得到开始时间、终止时间和重要性
+                var beginTime =  new Date().format("yyyyMMddhhmmss");
+                var endTime = common.addDateFromNow('d', TIME_WINDOW).format("yyyyMMddhhmmss");
+
+                var priority = 2;
+                // callback(error, response)
+                callback(null,  {
+                    'beg' : beginTime,
+                    'end' : endTime,
+                    'prio': priority
+                });
+               },
+               
+               //send DB query
+               function(queryInfo, callback) {
+                console.log('query -> ', queryInfo);
+                sqlUtil.query(queryInfo.beg, queryInfo.end, queryInfo.prio, (err, rows)=>{
+                    callback(err, rows);
+                })
+               },
+
+               //process result
+               function(rows, callback) {
+                console.log('process -> ', rows);
+                text = "";
+                for (const i in rows) {
+                    if (rows[i].alias != undefined) {
+                        text += rows[i].alias;
+                    }else {
+                        text += rows[i].date;
+                    }
+                    if (rows[i].event != undefined) {
+                        text += rows[i].event;
+                    }
+                }            
+                callback(error, text);
+               }
+
+               //handle final result
+            ], function(error, result) {
+                if (error) {
+                    console.log("Async ERROR");
+                    return;
+                }
+                //normal return;
+                if (result.length == 0) 
+                    result = "并没有什么重要的日子呢，尽力把每一天活得有点不一样吧";
+                console.log(result);
+                return common.makeTextCard(result);
+            });
 }
 //日期格式化
 Date.prototype.format = function(fmt) { 
@@ -54,25 +90,27 @@ Date.prototype.format = function(fmt) {
      return fmt; 
 }
 
-function parseQuery (input) {
+function parseQuery (input, callback) {
     // TODO 处理请求得到开始时间、终止时间和重要性
     var beginTime =  new Date().format("yyyyMMddhhmmss");
     var endTime = common.addDateFromNow('d', TIME_WINDOW).format("yyyyMMddhhmmss");
 
     var priority = 2;
-    return  {
+    // callback(error, response)
+    callback(null,  {
         'beg' : beginTime,
         'end' : endTime,
         'prio': priority
-    }
+    });
 }
 
 function query(beginTime, endTime, priority) {
-    
+    var rows; 
     sqlUtil.query(beginTime, endTime, priority, function(results){
-        return results;
+        rows = results;
     });
 }
+
 let MAX_COUNT = 5
 function processResult(results) {
     if (typeof(results) == undefined) {
