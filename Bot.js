@@ -72,16 +72,16 @@ class Bot extends BaseBot{
                     let event = this.getSessionAttribute('event');
                     // todo: write db
                     this.endSession();
-                    return this.makeTextCard('好的，已记录')
+                    return this.makeTextCard('好的，已记录');
                 } else if (this.matchNo(text)) {    // answer is no
                     this.endSession();
-                    return this.makeTextCard('好的')
+                    return this.makeTextCard('好的，不记录了');
                 } else {    // answer not clear
                     let time = this.getSessionAttribute('time');
                     let formatTime = this.getSessionAttribute('formatTime');
                     let event = this.getSessionAttribute('event');
                     this.waitAnswer();
-                    return this.makeTextCard('好的，您是要记录' + time + event + '吗？');
+                    return this.makeTextCard('什么，您是要记录' + time + event + '吗？');
                 }
             } else if (s1 == 2) {   // wait for event
                 let event = text;
@@ -231,7 +231,7 @@ class Bot extends BaseBot{
              '不错',
              '嗯'
         ];
-        return this.findMatch(text, dict);
+        return this.exactMatch(text, dict);
     }
 
     matchNo(text) {
@@ -240,9 +240,9 @@ class Bot extends BaseBot{
             '否',
             '不是的',
             '不',
-            '不对',
+            '不对'
         ];
-        return this.findMatch(text, dict);
+        return this.exactMatch(text, dict);
     }
 
     /**
@@ -251,6 +251,17 @@ class Bot extends BaseBot{
      */
     formatTime(time) {
         return '';
+    }
+
+    /**
+     * If text == any word of dict
+     * @param {String} text 
+     * @param {String[]} dict 
+     */
+    exactMatch(text, dict) {
+        for (let word of dict) 
+            if (text === word) return true;
+        return false;
     }
 
     /**
