@@ -12,6 +12,7 @@ session[0] = State.S1_INIT
 **/
 require('hashmap');
 class State {
+  constructor() {
   this.STATE_INIT = 0;
   this.STATE_RECORD_IMPORTANT_TIME = 1;
   this.STATE_RESERVE_REMINDER = 2;
@@ -27,6 +28,6 @@ class State {
 
   //意图2
   this.S2_INIT = 201;
-
+  }
 }
 module.exports = State;

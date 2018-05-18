@@ -7,7 +7,7 @@
  * 4. 给赞打分
  */
 function handleQaAnswearRequest () {
-    console.log('QaAnswearRequestHandler');
+    console.log('QaAnswearRequest');
 
 }
 
