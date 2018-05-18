@@ -240,7 +240,7 @@ class Bot extends BaseBot{
             '否',
             '不是的',
             '不',
-            '不对',
+            '不对'
         ];
         return this.exactMatch(text, dict);
     }
