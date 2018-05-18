@@ -24,6 +24,41 @@ this.isRecent = function(text) {
   return false;
 }
 
+  /**
+   * If text === any word of dict
+   * @param {String} text 
+   * @param {String[]} dict 
+   */
+  exactMatch(text, dict) {
+      for (let word of dict) 
+          if (text === word) return true;
+      return false;
+  }
+
+  /**
+   * If text has any word of dict
+   * @returns boolean
+   * @param {String} text 
+   * @param {String[]} dict 
+   */
+  findMatch(text, dict) {
+      return this.findPos(text, dict)[0] > -1;
+  }
+
+  /**
+   * @returns [start position(-1 on failure), word]
+   * @param {String} text 
+   * @param {String[]} dict 
+   */
+  findPos(text, dict) {
+      let pos = -1;
+      for (let i = 0; i < dict.length; i++) {
+          pos = text.indexOf(dict[i]);
+          if (pos > -1) return [pos, dict[i]];
+      }
+      return [pos, ''];
+  }
+
 
 }
 
