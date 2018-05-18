@@ -72,10 +72,10 @@ class Bot extends BaseBot{
                     let event = this.getSessionAttribute('event');
                     // todo: write db
                     this.endSession();
-                    return this.makeTextCard('好的，已记录')
+                    return this.makeTextCard('好的，已记录');
                 } else if (this.matchNo(text)) {    // answer is no
                     this.endSession();
-                    return this.makeTextCard('好的')
+                    return this.makeTextCard('好的，不记录了');
                 } else {    // answer not clear
                     let time = this.getSessionAttribute('time');
                     let formatTime = this.getSessionAttribute('formatTime');
