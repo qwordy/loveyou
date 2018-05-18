@@ -1,14 +1,14 @@
 // 注册意图Handler
 // ./handlers文件夹下包含处理函数
-require('hashmap');
-require('Bot');
-require('./config/Common');
-require('./models/State');
+var HashMap = require('hashmap');
+var Bot = require('./Bot');
+var Common_ = require('./config/Common');
+var State_ = require('./models/State');
 var reserveRequestHandler = require('./modules/reserveRequestHandler');
 var recordImportantTimeHandler = require('./modules/recordImportantTimeHandler');
-var Common = new Common();
+var Common = new Common_();
 var HandlersMap = new HashMap();
-var State = new State();
+var State = new State_();
 class Dispatcher {
   constructor(bot) {
     this.bot = bot;
