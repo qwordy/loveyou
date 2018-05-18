@@ -17,7 +17,7 @@ class Bot extends BaseBot{
         this.addLaunchHandler(()=>{
             console.log('LaunchRequest');
             let card = new Bot.Card.ImageCard();
-            card.addItem('https://upload.wikimedia.org/wikipedia/commons/3/33/-LOVE-love-36983825-1680-1050.jpg');
+            card.addItem('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526643927543&di=bf879630cece61edba1a4d353ead06e8&imgtype=0&src=http%3A%2F%2Fn1image.hjfile.cn%2Fmh%2F2017%2F02%2F23%2Ff3eb90ab776791a3d5cb4879ae91fbd0.jpg');
             this.setSessionAttribute('s1', 0);
             this.waitAnswer();
             return {
