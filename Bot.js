@@ -145,6 +145,12 @@ class Bot extends BaseBot{
             }
         });
 
+        this.addIntentHandler('extract_time', ()=>{
+            let time = this.getSlot('sys.date-time');
+            let date = this.getSlot('sys.date');
+            
+        });
+
         this.addIntentHandler('recording', ()=>{
             console.log('recording');
             if(!this.request.isDialogStateCompleted()) {
