@@ -1,7 +1,7 @@
 // 注册意图Handler
 // ./handlers文件夹下包含处理函数
 require('hashmap');
-require('Bot');
+require('./Bot');
 require('./config/Common');
 require('./models/State');
 var reserveRequestHandler = require('./modules/reserveRequestHandler');
