@@ -40,6 +40,7 @@ class Bot extends BaseBot{
          * 1 -> 1, when cannot deciding answer, ask confirmation again
          */
         this.addIntentHandler('ai.dueros.common.default_intent', ()=>{
+            console.log('Default intent');
             let s1 = this.getSessionAttribute('s1', 0)
             console.log('s1: ' + s1);
             if (s1 == 0) {  // wait new intent
