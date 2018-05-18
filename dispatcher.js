@@ -8,12 +8,12 @@ var Common = new Common();
 var Map = new HashMap();
 var State = new State();
 class Dispatcher {
-  constructor(Bot bot) {
+  constructor(bot) {
     this.bot = bot;
   }
 
   //中控函数，负责解析意图, 并派发给对应的Handler
-  this.parseIntent(input) {
+  parseIntent(input) {
     var state = this.bot.getSessionAttribute('state', -1);
     //初始状态
     if (state == -1) {
@@ -32,9 +32,9 @@ class Dispatcher {
           Map.get(State.STATE_RESERVE_REMINDER)(this.bot, input);
         }else {
           Map.get(State.STATE_RECORD_EVENT)(this.bot, input);
-        }else {
+        }//else {
           //TODO delegate to DuerOS
-        }
+        //}
       }
 
     //已经开始了对话，继续之前的对话
@@ -48,10 +48,9 @@ class Dispatcher {
   }
 
  //注册Intent Handler
-  this.registerIntent(intentId, intentHandler) {
+  registerIntent(intentId, intentHandler) {
      Map.set(intentId, intentHandler);
   }
-
 
 }
 
