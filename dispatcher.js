@@ -1,9 +1,10 @@
-// 注册意图Handler
+﻿// 注册意图Handler
 // ./handlers文件夹下包含处理函数
-var HashMap = require('hashmap');
-var Bot = require('./Bot');
-var Common_ = require('./config/common');
-var State_ = require('./models/State');
+<<<<<<< HEAD
+require('hashmap');
+require('./Bot');
+require('./config/Common');
+require('./models/State');
 var reserveRequestHandler = require('./modules/reserveRequestHandler');
 var recordImportantTimeHandler = require('./modules/recordImportantTimeHandler');
 var Common = new Common_();
