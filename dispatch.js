@@ -2,7 +2,7 @@
 
 // 加载所有的意图处理模块
 var handlers = new Map();
-handlers.set('LaunchRequest', require('./modules/launchRequestHandler'));
+//handlers.set('LaunchRequest', require('./modules/launchRequestHandler'));
 handlers.set('DefaultRequest', require('./modules/defaultRequestHandler'));
 // ... add handlers
 var handlersProxy = new Proxy(handlers, {
@@ -21,13 +21,13 @@ function dispatcher(input) {
 }
 
 
-
-var curSession = require('./models/SessionShared').curSession
 // 分析意图，返回
-function parseIntent() {
+function parseIntent(input) {
     // TODO
     return intentName;
 }
+///---------------------------
+///---------------------------
 
 
 module.exports.dispatcher = dispatcher;
