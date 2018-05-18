@@ -7,16 +7,16 @@ var State_ = require('./models/State');
 var reserveRequestHandler = require('./modules/reserveRequestHandler');
 var recordImportantTimeHandler = require('./modules/recordImportantTimeHandler');
 var Common = new Common_();
-var HandlersMap = new HashMap();
+var HandlersMap = {};
 var State = new State_();
 class Dispatcher {
   constructor(bot) {
     this.bot = bot;
-    this.registerIntent(Common.STATE_RESERVE_REMINDER, reserveRequestHandler);
-    this.registerIntent(Common.STATE_RECORD_IMPORTANT_TIME, recordImportantTimeHandler);
-    this.registerIntent(Common.STATE_ASK_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
-    this.registerIntent(Common.STATE_RECALL_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
-    this.registerIntent(Common.STATE_RECORD_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
+    HandlersMap[State.STATE_RESERVE_REMINDER] = reserveRequestHandler;
+    HandlersMap[State.STATE_RECORD_IMPORTANT_TIME] = recordImportantTimeHandler;
+    HandlersMap[State.STATE_ASK_EVENT], (a, b)=>{console.log("construct disp");};
+    HandlersMap[State.STATE_RECALL_EVENT], (a, b)=>{this.bot.makeTextcard('呵呵');};
+    HandlersMap[State.STATE_RECORD_EVENT] = (a, b)=>{console.log("event created");};
   }
 
   //中控函数，负责解析意图, 并派发给对应的Handler
@@ -34,9 +34,11 @@ class Dispatcher {
       //陈述句
       }else {
         if(Common.isRecording(input)) {
-          HandlersMap.get(State.STATE_RECORD_EVENT).call(this.bot, input);
+         var fun =  HandlersMap[State.STATE_RECORD_EVENT];
+         console.log(typeof(fun));
+         fun(this.bot, input);
         }else if(Common.isReserving(input)) {
-          HandlersMap.get(State.STATE_RESERVE_REMINDER)(this.bot, input);
+          HandlersMap.get[State.STATE_RESERVE_REMINDER](this.bot, input);
         }else {
           HandlersMap.get(State.STATE_RECORD_EVENT)(this.bot, input);
         }//else {
@@ -56,7 +58,7 @@ class Dispatcher {
 
  //注册Intent Handler
   registerIntent(intentId, intentHandler) {
-     HandlersMap.set(intentId, intentHandler);
+     HandlersMap[intentId] =  intentHandler;
   }
 
 }
