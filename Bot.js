@@ -95,7 +95,7 @@ class Bot extends BaseBot{
                 let time = text;
                 let formatTime = this.formatTime(text);
                 this.setSessionAttribute('time', time);
-                this.setSessionAttribute('formatTime', formatedTime);
+                this.setSessionAttribute('formatTime', formatTime);
                 let event = this.getSessionAttribute('event');
                 this.setSessionAttribute('s1', 1);
                 this.waitAnswer();
@@ -148,7 +148,7 @@ class Bot extends BaseBot{
         this.addIntentHandler('extract_time', ()=>{
             let time = this.getSlot('sys.date-time');
             let date = this.getSlot('sys.date');
-            
+
         });
 
         this.addIntentHandler('recording', ()=>{
