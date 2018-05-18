@@ -14,9 +14,9 @@ class Dispatcher {
     this.bot = bot;
     this.registerIntent(Common.STATE_RESERVE_REMINDER, reserveRequestHandler);
     this.registerIntent(Common.STATE_RECORD_IMPORTANT_TIME, recordImportantTimeHandler);
-    this.registerIntent(Common.STATE_ASK_EVENT, ()=>{this.bot.makeTextcard('呵呵');});
-    this.registerIntent(Common.STATE_RECALL_EVENT, ()=>{this.bot.makeTextcard('呵呵');});
-    this.registerIntent(Common.STATE_RECORD_EVENT, ()=>{this.bot.makeTextcard('呵呵');});
+    this.registerIntent(Common.STATE_ASK_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
+    this.registerIntent(Common.STATE_RECALL_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
+    this.registerIntent(Common.STATE_RECORD_EVENT, (a, b)=>{this.bot.makeTextcard('呵呵');});
   }
 
   //中控函数，负责解析意图, 并派发给对应的Handler
