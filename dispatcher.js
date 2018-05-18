@@ -5,7 +5,7 @@ require('Bot');
 require('./config/Common');
 require('./models/State');
 var Common = new Common();
-var Map = new HashMap();
+var HandlersMap = new HashMap();
 var State = new State();
 class Dispatcher {
   constructor(bot) {
@@ -20,18 +20,18 @@ class Dispatcher {
       //疑问句
       if (Common.isQuestion(input)) {
         if (Common.isRecent(input)) {
-          Map.get(State.STATE_ASK_EVENT)(this.bot, input); //handle intent
+          HandlersMap.get(State.STATE_ASK_EVENT)(this.bot, input); //handle intent
         }else {
-          Map.get(State.STATE_RECALL_EVENT)(this.bot, input); //handle intent
+          HandlersMap.get(State.STATE_RECALL_EVENT)(this.bot, input); //handle intent
         }
       //陈述句
       }else {
         if(Common.isRecording(input)) {
-          Map.get(State.STATE_RECORD_EVENT)(this.bot, input);
+          HandlersMap.get(State.STATE_RECORD_EVENT)(this.bot, input);
         }else if(Common.isReserving(input)) {
-          Map.get(State.STATE_RESERVE_REMINDER)(this.bot, input);
+          HandlersMap.get(State.STATE_RESERVE_REMINDER)(this.bot, input);
         }else {
-          Map.get(State.STATE_RECORD_EVENT)(this.bot, input);
+          HandlersMap.get(State.STATE_RECORD_EVENT)(this.bot, input);
         }//else {
           //TODO delegate to DuerOS
         //}
@@ -41,7 +41,7 @@ class Dispatcher {
     } else {
       //获得意图开始 数字位
        var intentId = this.bot.getSessionAttribute('state');
-       Map.get(intentId)(this.bot, input);
+       HandlersMap.get(intentId)(this.bot, input);
     }
 
     //调用map中的handler 函数
@@ -49,7 +49,7 @@ class Dispatcher {
 
  //注册Intent Handler
   registerIntent(intentId, intentHandler) {
-     Map.set(intentId, intentHandler);
+     HandlersMap.set(intentId, intentHandler);
   }
 
 }
