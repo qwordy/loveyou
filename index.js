@@ -6,7 +6,6 @@ const express = require('express');
 
 const LoveYouApp = require('./loveYouApp');
 var app = express();
-global.app = app
 global.Bot = LoveYouApp
 
 // 探活请求
@@ -30,15 +29,16 @@ app.post('/', (req, res) => {
     });
 
     req.on('end', function() {
-        var app = new LoveYouApp(JSON.parse(req.rawBody));
+        var loveYouApp = new LoveYouApp(JSON.parse(req.rawBody));
+        global.app = loveYouApp;
 
         // 开启签名认证
-        app.initCertificate(req.headers, req.rawBody).enableVerifyRequestSign();
+        loveYouApp.initCertificate(req.headers, req.rawBody).enableVerifyRequestSign();
        
         // 不需要监控
-        app.run().then(function(result){
+        loveYouApp.run().then(function(result){
            res.send(result);
         });
     });
-}).listen(8014);
+}).listen(8015);
 
