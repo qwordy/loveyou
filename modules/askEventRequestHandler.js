@@ -55,6 +55,7 @@ function parseQuery (input) {
     // TODO 处理请求得到开始时间、终止时间和重要性
     var beginTime =  new Date().format("yyyyMMddhhmmss");
     var endTime = common.addDateFromNow('d', TIME_WINDOW).format("yyyyMMddhhmmss");
+
     var priority = 2;
     return  {
         'beg' : beginTime,
