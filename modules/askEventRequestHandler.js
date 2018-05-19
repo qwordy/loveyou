@@ -118,7 +118,7 @@ function handleAskEventRequest (bot, input) {
 
             });
     while (!dataReady);
-    return bot.makeTextCard();
+    return bot.makeTextCard(data);
 }
 //日期格式化
 Date.prototype.format = function(fmt) { 
