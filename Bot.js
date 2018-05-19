@@ -36,9 +36,7 @@ class Bot extends BaseBot{
             console.log('Default intent');
             let text = postData['request']['query']['original'];
             console.log(text);
-            this.dispatcher.parseIntent(text);
-
-            return;
+            return this.dispatcher.parseIntent(text);
         });
 
         /**
@@ -52,7 +50,7 @@ class Bot extends BaseBot{
 
             let text = postData['request']['query']['original'];
             console.log(text);
-            this.dispatcher.parseIntent(text);
+            return this.dispatcher.parseIntent(text);
         });
 
         this.addIntentHandler('personal_income_tax.inquiry', ()=>{
