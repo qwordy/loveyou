@@ -19,6 +19,7 @@ class SqlUtil {
     db.serialize(function() {
       db.all('SELECT * from calendar where time >= ' + beginTime + ' and time <= ' + endTime
       + " and priority=" + priority, function(err, rows) {
+        console.log('sql query ' + err);
         callback(err, rows);
       });
     });
