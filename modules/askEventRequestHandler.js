@@ -9,10 +9,56 @@ var sqlUtil = new SqlUtil();
 // sqlUtil.insert('20180505120000', 'abc', 'def', '', 0, 0);
 // sqlUtil.query('20180501000000', '20180530000000', 1, function(rows) */
 
+function echo(err, rows) {
+    return rows;
+}
+
+async function call() {
+    //1
+     // TODO 处理请求得到开始时间、终止时间和重要性
+     var beginTime =  new Date().format("yyyyMMddhhmmss");
+     var endTime = common.addDateFromNow('d', TIME_WINDOW).format("yyyyMMddhhmmss");
+
+     var priority = 2;
+     // callback(error, response)
+     obj = {
+         'beg' : beginTime,
+         'end' : endTime,
+         'prio': priority
+     };
+
+     //2 db
+     var rows = await sqlUtil.query(queryInfo.beg, queryInfo.end, queryInfo.prio, (err, rows)=>{
+        echo(err, rows);
+    });
+    console.log('final rw '+rows);
+    //3
+    text = "";
+    for (const i in rows) {
+        if (rows[i].alias != undefined) {
+            text += rows[i].alias;
+        }else {
+            text += rows[i].date;
+        }
+        if (rows[i].event != undefined) {
+            text += rows[i].event;
+        }
+    }            
+    return text;
+
+}
+
 var rows;
 function handleAskEventRequest (bot, input) {
     console.log('askEventRequest');
 
+    
+
+    var res = await call();
+    return bot.makeTextCard(res);
+
+   
+    /*
     async.waterfall(
             [
                //parse input
@@ -66,16 +112,11 @@ function handleAskEventRequest (bot, input) {
                     result = "并没有什么重要的日子呢，尽力把每一天活得有点不一样吧";
                 console.log(result);
                 return bot.makeTextCard(result);
-                /*return new Promise(function(resolve, reject){
-                    resolve({
-                        card : bot.makeTextCard(result),
-                        outputSpeech : '你工资多少呢'
-                    });
-                });*/
+               
 
             });
     
-    return bot.makeTextCard();
+    return bot.makeTextCard();*/
 }
 //日期格式化
 Date.prototype.format = function(fmt) { 
