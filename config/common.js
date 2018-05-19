@@ -74,8 +74,8 @@ class Common {
 
     //预约提醒
     isReserving(text) {
-      //TODO
-      return true;
+      let arr = ['预约','设定','预订'];
+      return this._isFound(arr, text);
     }
 
     //add number of date gap, get Date object
