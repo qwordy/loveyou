@@ -155,6 +155,7 @@ class Bot extends BaseBot{
 
     //make new card
      makeTextCard(text) {
+         console.log('makeTextCard ' + text);
       return {
           card: new Bot.Card.TextCard(text),
           outputSpeech: text
