@@ -65,15 +65,17 @@ function handleAskEventRequest (bot, input) {
                 if (result.length == 0) 
                     result = "并没有什么重要的日子呢，尽力把每一天活得有点不一样吧";
                 console.log(result);
-                //return bot.makeTextCard(result);
-                return new Promise(function(resolve, reject){
+                return bot.makeTextCard(result);
+                /*return new Promise(function(resolve, reject){
                     resolve({
                         card : bot.makeTextCard(result),
                         outputSpeech : '你工资多少呢'
                     });
-                });
+                });*/
 
             });
+    
+    return bot.makeTextCard();
 }
 //日期格式化
 Date.prototype.format = function(fmt) { 
