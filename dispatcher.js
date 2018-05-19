@@ -27,20 +27,25 @@ class Dispatcher {
       //疑问句
       if (Common.isQuestion(input)) {
         if (Common.isRecent(input)) {
+          this.bot.setSessionAttribute('state', State.STATE_ASK_EVENT);
           HandlersMap[State.STATE_ASK_EVENT](this.bot, input); //handle intent
         }else {
+          this.bot.setSessionAttribute('state', State.STATE_RECALL_EVENT);
           HandlersMap[State.STATE_RECALL_EVENT](this.bot, input); //handle intent
         }
       //陈述句
       }else {
         //记录重要事件
         if(Common.isRecording(input)) {
+          this.bot.setSessionAttribute('state', State.STATE_RECORD_EVENT);
          var fun =  HandlersMap[State.STATE_RECORD_EVENT];
          console.log(typeof(fun));
          fun(this.bot, input);
         }else if(Common.isReserving(input)) {
+          this.bot.setSessionAttribute('state', State.STATE_RESERVE_REMINDER);
           HandlersMap[State.STATE_RESERVE_REMINDER](this.bot, input);
         }else {
+          this.bot.setSessionAttribute('state', State.STATE_RECORD_EVENT);
           HandlersMap[State.STATE_RECORD_EVENT](this.bot, input);
         }//else {
           //TODO delegate to DuerOS
