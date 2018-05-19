@@ -13,7 +13,7 @@ function echo(err, rows) {
     return rows;
 }
 
-async function call() {
+function call() {
     //1
      // TODO 处理请求得到开始时间、终止时间和重要性
      var beginTime =  new Date().format("yyyyMMddhhmmss");
@@ -58,7 +58,8 @@ function handleAskEventRequest (bot, input) {
     return bot.makeTextCard(res);
 
    
-    /*
+    let dataReady = false;
+    let data = '';
     async.waterfall(
             [
                //parse input
@@ -111,12 +112,13 @@ function handleAskEventRequest (bot, input) {
                 if (result.length == 0) 
                     result = "并没有什么重要的日子呢，尽力把每一天活得有点不一样吧";
                 console.log(result);
-                return bot.makeTextCard(result);
+                data = result;
+                dataReady = true;
                
 
             });
-    
-    return bot.makeTextCard();*/
+    while (!dataReady);
+    return bot.makeTextCard();
 }
 //日期格式化
 Date.prototype.format = function(fmt) { 
