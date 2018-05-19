@@ -20,25 +20,23 @@ module.exports = (bot, input) => {
   let s1 = bot.getSessionAttribute('s1', 0);
   console.log('s1: ' + s1);
   if (s1 == 0) {  // wait new intent
-      if (bot.matchRecord(text)) {
-          let timeResult = bot.matchTime(text);
-          let pos = timeResult[0];
-          let time = timeResult[1];
-          let event = text.substr(pos + time.length);
-          if (time == '' || event == '') {    // incomplete info
-              bot.setSessionAttribute('s1', 2);
-              bot.waitAnswer();
-              return bot.makeTextCard('请问您要记录的事件是？');
-          } else {    // enough info
-              let formatedTime = bot.formatTime(time);
-              bot.setSessionAttribute('s1', 1);
-              bot.setSessionAttribute('time', time);
-              bot.setSessionAttribute('formatTime', formatedTime);
-              bot.setSessionAttribute('event', event);
-              bot.waitAnswer();
-              return bot.makeTextCard('好的，您是要记录' + time + event + '吗？');
-          }
-      }
+    let timeResult = bot.matchTime(text);
+    let pos = timeResult[0];
+    let time = timeResult[1];
+    let event = text.substr(pos + time.length);
+    if (time == '' || event == '') {    // incomplete info
+        bot.setSessionAttribute('s1', 2);
+        bot.waitAnswer();
+        return bot.makeTextCard('请问您要记录的事件是？');
+    } else {    // enough info
+        let formatedTime = bot.formatTime(time);
+        bot.setSessionAttribute('s1', 1);
+        bot.setSessionAttribute('time', time);
+        bot.setSessionAttribute('formatTime', formatedTime);
+        bot.setSessionAttribute('event', event);
+        bot.waitAnswer();
+        return bot.makeTextCard('好的，您是要记录' + time + event + '吗？');
+    }
   } else if (s1 == 1) {   // wait for comfirm
       if (bot.matchYes(text)) {  // answer is yes
           let formatTime = bot.getSessionAttribute('formatTime');
